@@ -412,10 +412,10 @@ open class MyTableView:UIScrollView {
         return cachedCells.object(forKey: indexPath) as! UITableViewCell
     }
     
-    func indexPathsForRowsInRect(rect: CGRect) -> NSArray {
+    /*func indexPathsForRowsInRect(rect: CGRect) -> NSArray {
         updateSectionCacheIfNeeded()
         
-    }
+    }*/
     
     
     func numberOfSection() -> NSInteger {
