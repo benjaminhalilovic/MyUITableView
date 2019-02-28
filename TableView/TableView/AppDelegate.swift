@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  MyUITableView
+//  TableView
 //
-//  Created by mac on 13/02/2018.
+//  Created by mac on 09/03/2018.
 //  Copyright © 2018 Benjamin Halilovic. All rights reserved.
 //
 
