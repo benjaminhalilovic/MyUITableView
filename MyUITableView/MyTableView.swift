@@ -89,7 +89,16 @@ open class MyTableView:UIScrollView {
             }
         }
     }
-    var backgroundView: UIView?
+    var backgroundView: UIView? {
+         didSet(value) {
+            if value != backgroundView {
+                backgroundView?.removeFromSuperview()
+                backgroundView = value
+                insertSubview(backgroundView!, at: 0)
+            }
+        }
+    }
+    
     var allowsSection: Bool = true
     var editing: Bool = false
     var sectionHeaderHeight: CGFloat
@@ -124,14 +133,28 @@ open class MyTableView:UIScrollView {
         }
     }
     
+    /*Override frame (setFrame)*/
+    override open var frame: CGRect {
+        didSet (newValue) {
+            let oldValue = self.frame
+            if oldValue.equalTo(newValue) {
+                super.frame = newValue
+                if oldValue.size.width != newValue.size.width {
+                    updateSectionsCache()
+                }
+                setContetnSize()
+            }
+        }
+    }
+    
     
     init(withFrame frame:CGRect, style theStyle: UITableViewStyle) {
         style = theStyle
         cachedCells = NSMutableDictionary()
         sections = NSMutableArray()
         reusableCells = NSMutableSet()
-        
-        separatorColor = UIColor.init(colorLiteralRed: 0.88, green: 0.88, blue: 0.88, alpha: 1)
+      
+        separatorColor = UIColor.init(red: 0.88, green: 0.88, blue: 0.88, alpha: 1)
         separatorStyle = UITableViewCellSeparatorStyle.singleLine
         allowsSection = true
         sectionHeaderHeight = 22
@@ -144,6 +167,7 @@ open class MyTableView:UIScrollView {
         showsHorizontalScrollIndicator = false
 
         needReload = true
+        print("self.frame \(self.frame)")
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -166,7 +190,26 @@ open class MyTableView:UIScrollView {
             for section in 0..<numberOfSection {
                 let numberOfRowsInSection = self.numberOfRowsInSection(section: section)
                 let sectionRecord = MyTableViewSection()
-                //sectionRecord.headerTitle =
+                /*
+                 sectionRecord.headerTitle = _dataSourceHas.titleForHeaderInSection? [self.dataSource tableView:self titleForHeaderInSection:section] : nil;
+                 sectionRecord.footerTitle = _dataSourceHas.titleForFooterInSection? [self.dataSource tableView:self titleForFooterInSection:section] : nil;
+                 
+                 sectionRecord.headerHeight = _delegateHas.heightForHeaderInSection? [self.delegate tableView:self heightForHeaderInSection:section] : _sectionHeaderHeight;
+                 sectionRecord.footerHeight = _delegateHas.heightForFooterInSection ? [self.delegate tableView:self heightForFooterInSection:section] : _sectionFooterHeight;
+                 
+                 sectionRecord.headerView = (sectionRecord.headerHeight > 0 && _delegateHas.viewForHeaderInSection)? [self.delegate tableView:self viewForHeaderInSection:section] : nil;
+                 sectionRecord.footerView = (sectionRecord.footerHeight > 0 && _delegateHas.viewForFooterInSection)? [self.delegate tableView:self viewForFooterInSection:section] : nil;
+                 
+                 // make a default section header view if there's a title for it and no overriding view
+                 if (!sectionRecord.headerView && sectionRecord.headerHeight > 0 && sectionRecord.headerTitle) {
+                 sectionRecord.headerView = [UITableViewSectionLabel sectionLabelWithTitle:sectionRecord.headerTitle];
+                 }
+                 
+                 // make a default section footer view if there's a title for it and no overriding view
+                 if (!sectionRecord.footerView && sectionRecord.footerHeight > 0 && sectionRecord.footerTitle) {
+                 sectionRecord.footerView = [UITableViewSectionLabel sectionLabelWithTitle:sectionRecord.footerTitle];
+                 }
+                 */
                 
                 if let sectionHeaderView = sectionRecord.headerView {
                     addSubview(sectionHeaderView)
@@ -219,42 +262,7 @@ open class MyTableView:UIScrollView {
 
     
     
-    override open func layoutSubviews() {
-        backgroundView?.frame = self.bounds
-        print("need reload \(needReload)")
-        reloadDataIfNeeded()
-        layoutTableView()
-        super.layoutSubviews()
-    }
-    
-    fileprivate func reloadDataIfNeeded() {
-        if needReload {
-            reloadData()
-        }
-    }
-    
-    func reloadData() {
-        let cachedcells = cachedCells.allValues as! [UIView]
-        cachedcells.forEach { subview in
-            subview.removeFromSuperview()
-        }
-        
-        let reusablecells = reusableCells
-        reusablecells.forEach { subview in
-            (subview as AnyObject).removeFromSuperview()
-        }
-        
-        reusableCells.removeAllObjects()
-        cachedCells.removeAllObjects()
-        
-        selectedRow = nil
-        highlightedRow = nil
-        
-        updateSectionsCache()
-        setContetnSize()
-        
-        needReload = false
-    }
+   
     
     
     
@@ -412,10 +420,73 @@ open class MyTableView:UIScrollView {
         return cachedCells.object(forKey: indexPath) as! UITableViewCell
     }
     
-    /*func indexPathsForRowsInRect(rect: CGRect) -> NSArray {
+    
+    // This needs to return the index paths even if the cells don't exist in any caches or are not on screen
+    // For now I'm assuming the cells stretch all the way across the view. It's not clear to me if the real
+    // implementation gets anal about this or not (haven't tested it).
+    func indexPathsForRowsInRect(rect: CGRect) -> NSArray {
         updateSectionCacheIfNeeded()
+
+        let result = NSMutableArray()
+        let numberOfSection = sections.count
         
-    }*/
+        var offset : CGFloat = 0
+        if let tableHeaderView = tableHeaderView {
+             offset = tableHeaderView.frame.size.height
+        }
+        
+        for section in 0..<numberOfSection {
+            let sectionRecord = sections.object(at: section) as! MyTableViewSection
+            let rowHeights = sectionRecord.rowHeights
+            
+            let numberOfRows = sectionRecord.numberOfRows
+            
+            if (offset + sectionRecord.rowsHeight >= rect.origin.y) {
+                for row in 0..<numberOfRows {
+                   let height = rowHeights[row]
+                    let simpleRowRect = CGRect(x: rect.origin.x
+                        , y: offset, width: rect.size.width, height: height)
+                    
+                    if rect.intersects(simpleRowRect) {
+                        result.add(NSIndexPath(row: row, section: section))
+                    } else if(simpleRowRect.origin.y > rect.origin.y + rect.size.height) {
+                        break
+                    }
+                    offset += height
+                }
+                
+            } else {
+                //Increment until we arrive to rect.origin.y
+                offset += sectionRecord.rowsHeight
+            }
+            
+            offset += sectionRecord.footerHeight
+        }
+        
+        return result
+    }
+    
+    
+    func indexPathForRowAtPoint(_ point: CGPoint) -> NSIndexPath? {
+        let array = indexPathsForRowsInRect(rect: CGRect(x: point.x, y: point.y, width: 1, height: 1))
+        return (array.count > 0) ? array.object(at: 0) as? NSIndexPath : nil
+    }
+    
+    func indexPathForVisibleRows() -> NSArray  {
+        layoutTableView()
+        let indexes: NSMutableArray = NSMutableArray(capacity: cachedCells.count)
+        let bounds = self.bounds
+        
+        // Special note - it's unclear if UIKit returns these in sorted order. Because we're assuming that visibleCells returns them in order (top-bottom)
+        // and visibleCells uses this method, I'm going to make the executive decision here and assume that UIKit probably does return them sorted - since
+        // there's nothing warning that they aren't. :)
+        for indexPath in cachedCells.allKeys {
+            if bounds.intersects(rectForRowAtIndexPath(at: indexPath as! NSIndexPath)){
+                indexes.add(indexPath)
+            }
+        }
+        return indexes
+    }
     
     
     func numberOfSection() -> NSInteger {
@@ -428,5 +499,63 @@ open class MyTableView:UIScrollView {
     func numberOfRowsInSection(section: NSInteger) -> NSInteger {
         return (dataSource?.tableView(self, numberOfRowsInSection: section))!
     }
-
+    
+    
+    func reloadData() {
+        let cachedcells = cachedCells.allValues as! [UIView]
+        cachedcells.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        let reusablecells = reusableCells
+        reusablecells.forEach { subview in
+            (subview as AnyObject).removeFromSuperview()
+        }
+        
+        reusableCells.removeAllObjects()
+        cachedCells.removeAllObjects()
+        
+        selectedRow = nil
+        highlightedRow = nil
+        
+        updateSectionsCache()
+        setContetnSize()
+        
+        needReload = false
+    }
+    
+    fileprivate func reloadDataIfNeeded() {
+        if needReload {
+            reloadData()
+        }
+    }
+    
+    override open func layoutSubviews() {
+        backgroundView?.frame = self.bounds
+        print("need reload \(needReload)")
+        reloadDataIfNeeded()
+        layoutTableView()
+        super.layoutSubviews()
+    }
+    
+    func indexPathForSelectedRow() -> NSIndexPath? {
+        return selectedRow
+    }
+    
+    func dequeueReusableCellWithIdentifier(_ identifier: String) -> UITableViewCell? {
+        for cell in reusableCells {
+            let cellRecord = cell as! UITableViewCell
+            if cellRecord.reuseIdentifier == identifier {
+                let strongCell = cellRecord
+                reusableCells.remove(cell)
+                strongCell.prepareForReuse()
+                return strongCell
+            }
+        }
+        return nil
+    }
+ 
+    
+    
+  //End
 }
