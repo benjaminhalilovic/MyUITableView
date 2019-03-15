@@ -15,6 +15,8 @@
 		041992A9203322D100527C13 /* MyTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041992A8203322D100527C13 /* MyTableView.swift */; };
 		041992AB2033A56600527C13 /* TableViewCntroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041992AA2033A56600527C13 /* TableViewCntroller.swift */; };
 		041E625D2044E5A8006C2E08 /* MyTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041E625C2044E5A8006C2E08 /* MyTableViewSection.swift */; };
+		04F123B4223A326E0064FDC5 /* MyNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F123B3223A326E0064FDC5 /* MyNavigationViewController.swift */; };
+		04F123B8223A69B80064FDC5 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F123B7223A69B80064FDC5 /* MyViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		041992A8203322D100527C13 /* MyTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableView.swift; sourceTree = "<group>"; };
 		041992AA2033A56600527C13 /* TableViewCntroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCntroller.swift; sourceTree = "<group>"; };
 		041E625C2044E5A8006C2E08 /* MyTableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableViewSection.swift; sourceTree = "<group>"; };
+		04F123B3223A326E0064FDC5 /* MyNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNavigationViewController.swift; sourceTree = "<group>"; };
+		04F123B7223A69B80064FDC5 /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 		04199295203321F200527C13 /* MyUITableView */ = {
 			isa = PBXGroup;
 			children = (
+				04F123B6223A670F0064FDC5 /* ViewController */,
+				04F123B5223A32840064FDC5 /* NavigationVC */,
 				04199296203321F200527C13 /* AppDelegate.swift */,
 				04199298203321F200527C13 /* ViewController.swift */,
 				041992A8203322D100527C13 /* MyTableView.swift */,
@@ -71,6 +77,22 @@
 				041992AA2033A56600527C13 /* TableViewCntroller.swift */,
 			);
 			path = MyUITableView;
+			sourceTree = "<group>";
+		};
+		04F123B5223A32840064FDC5 /* NavigationVC */ = {
+			isa = PBXGroup;
+			children = (
+				04F123B3223A326E0064FDC5 /* MyNavigationViewController.swift */,
+			);
+			path = NavigationVC;
+			sourceTree = "<group>";
+		};
+		04F123B6223A670F0064FDC5 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				04F123B7223A69B80064FDC5 /* MyViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,7 +170,9 @@
 				041992A9203322D100527C13 /* MyTableView.swift in Sources */,
 				041E625D2044E5A8006C2E08 /* MyTableViewSection.swift in Sources */,
 				04199299203321F200527C13 /* ViewController.swift in Sources */,
+				04F123B8223A69B80064FDC5 /* MyViewController.swift in Sources */,
 				04199297203321F200527C13 /* AppDelegate.swift in Sources */,
+				04F123B4223A326E0064FDC5 /* MyNavigationViewController.swift in Sources */,
 				041992AB2033A56600527C13 /* TableViewCntroller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -111,25 +111,25 @@ open class MyTableView:UIScrollView {
     fileprivate var selectedRow: NSIndexPath?
     fileprivate var highlightedRow: NSIndexPath?
     
-    fileprivate var needReload: Bool = false {
-        didSet {
+    fileprivate var needReload: Bool = false /*{
+        didSet  {
             if needReload {
                 print("need reload")
                 setNeedsLayout()
             }
         }
-    }
+    }*/
     
     
     weak var dataSource:MyTableViewDataSource? {
         didSet {
-          needReload = true
+          setNeedReload()
         }
     }
     
     weak var delegateTable: MyTableViewDelegate? {
         didSet {
-            needReload = true
+            setNeedReload()
         }
     }
     
@@ -166,8 +166,7 @@ open class MyTableView:UIScrollView {
         }
         showsHorizontalScrollIndicator = false
 
-        needReload = true
-        print("self.frame \(self.frame)")
+        setNeedReload()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -270,7 +269,6 @@ open class MyTableView:UIScrollView {
         let boundSize: CGSize = self.bounds.size
         let contentOffset: CGFloat = self.contentOffset.y
         let visibleBounds = CGRect(x: 0, y: contentOffset, width: boundSize.width, height: boundSize.height)
-        print("visible bounda \(visibleBounds)")
         var tableHeight:CGFloat = 0
         
         if let header = tableHeaderView {
@@ -319,7 +317,7 @@ open class MyTableView:UIScrollView {
                 }
             }
         }
-       
+
         for cell in availableCells.allValues as! [UITableViewCell] {
             print("Available cell count \(availableCells.allValues.count)")
             if (cell.reuseIdentifier != nil) {
@@ -416,8 +414,13 @@ open class MyTableView:UIScrollView {
         
     }
     
-    func cellForRowAtIndexPath(_ indexPath: NSIndexPath) -> UITableViewCell {
-        return cachedCells.object(forKey: indexPath) as! UITableViewCell
+    func cellForRowAtIndexPath(_ indexPath: NSIndexPath) -> UITableViewCell? {
+        //Problem called before layout table view
+        if cachedCells.count > 0 {
+            return cachedCells.object(forKey: indexPath) as? UITableViewCell
+        }
+        return nil
+        
     }
     
     
@@ -530,9 +533,14 @@ open class MyTableView:UIScrollView {
         }
     }
     
+    fileprivate func setNeedReload() {
+        needReload = true
+        setNeedsLayout()
+    }
+    
     override open func layoutSubviews() {
+        print("Layout subview")
         backgroundView?.frame = self.bounds
-        print("need reload \(needReload)")
         reloadDataIfNeeded()
         layoutTableView()
         super.layoutSubviews()
@@ -540,6 +548,43 @@ open class MyTableView:UIScrollView {
     
     func indexPathForSelectedRow() -> NSIndexPath? {
         return selectedRow
+    }
+    
+    func indexPathForCell(_ cell: UITableViewCell) -> NSIndexPath? {
+        let cachedCellsIndex = cachedCells.allKeys as! [NSIndexPath]
+        for index in cachedCellsIndex {
+            if cachedCells.object(forKey: index) as! UITableViewCell == cell {
+                return index
+            }
+        }
+        
+        return nil
+    }
+    
+    func deselectRowAtIndexPath(_ indexPath: NSIndexPath, animated: Bool) {
+        if indexPath.isEqual(selectedRow) {
+            cellForRowAtIndexPath(selectedRow!)?.setSelected(false, animated: false)
+            selectedRow = nil
+        }
+    }
+    
+    func selectRowAtIndexPath(_ indexPath: NSIndexPath, animated: Bool, scrollPosition: UITableViewScrollPosition) {
+        // unlike the other methods that I've tested, the real UIKit appears to call reload during selection if the table hasn't been reloaded
+        // yet. other methods all appear to rebuild the section cache "on-demand" but don't do a "proper" reload. for the sake of attempting
+        // to maintain a similar delegate and dataSource access pattern to the real thing, I'll do it this way here. :)
+        
+        reloadDataIfNeeded()
+        if let selectRow = selectedRow {
+            if !selectRow.isEqual(indexPath) {
+                deselectRowAtIndexPath(selectRow, animated: animated)
+                selectedRow = indexPath
+                cellForRowAtIndexPath(selectRow)?.setSelected(true, animated: false)
+            }
+        } else {
+            selectedRow = indexPath
+            cellForRowAtIndexPath(selectedRow!)?.setSelected(true, animated: false)
+        }
+        
     }
     
     func dequeueReusableCellWithIdentifier(_ identifier: String) -> UITableViewCell? {
