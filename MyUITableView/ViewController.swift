@@ -20,6 +20,7 @@ class ViewController: UIViewController, MyTableViewDataSource {
 
         let myViewController = MyViewController(nibName: nil, bundle: nil)
         myViewController.view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+       
         print(myViewController)
         
         let myViewController1 = UIViewController(nibName: nil, bundle: nil)
