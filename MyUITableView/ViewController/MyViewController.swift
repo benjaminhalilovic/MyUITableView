@@ -184,7 +184,18 @@ class MyViewController: UIResponder {
     private (set) var searchDisplayController: UISearchController?
     private (set) var modalViewController: MyViewController?
     
+    private (set) var appearanceTransitionStack: NSInteger = 0
+    private (set) var appearanceTransitionIsAnimated: Bool = false
+    private (set) var viewIsAppearing: Bool = false
     private (set) var parentageTransition: UIViewControllerParentageTransition?
+    
+    var shouldAutomaticallyForwardRotationMethods: Bool {
+        return true;
+    }
+    
+    var shouldAutomaticallyForwardAppearanceMethods: Bool {
+        return true;
+    }
     
     
     public override convenience init() {
@@ -221,6 +232,30 @@ class MyViewController: UIResponder {
     
     }
     
+    func dismissModalViewControllerAnimated(_ animated: Bool) {
+        if let modalViewController = modalViewController {
+            if modalViewController.modalViewController != nil {
+                modalViewController.dismissModalViewControllerAnimated(animated)
+            }
+            view.isHidden = false
+            modalViewController.view.removeFromSuperview()
+            modalViewController.parent = nil
+            self.modalViewController = nil
+            viewDidAppear(animated)
+        } else {
+            parent?.dismissModalViewControllerAnimated(animated)
+        }
+        
+    }
+    
+    /*func nearestParentViewControllerThatIsKindOf(_ c: AnyClass) -> Any {
+        if let parent = parent  {
+            if parent.isKind(of: c) {
+                
+            }
+        }
+    }*/
+    
     //addChildViewController
     //This method creates a parent-child relationship between the current view controller and the object in the childController parameter. This relationship is necessary when embedding the child view controller’s view into the current view controller’s content. If the new child view controller is already the child of a container view controller, it is removed from that container before being added.
     //This method is only intended to be called by an implementation of a custom container view controller. If you override this method, you must call super in your implementation.
@@ -241,6 +276,87 @@ class MyViewController: UIResponder {
             }
         }
     }
+    
+    //This method adds the second view controller's view to the view hierarchy and then performs the animations defined in your animations block. After the animation completes, it removes the first view controller's view from the view hierarchy.
+    //This method is only intended to be called by an implementation of a custom container view controller. If you override this method, you must call super in your implementation.
+    
+    func transitionFromViewController(_ fromViewController: MyViewController, toViewController: MyViewController, duration: TimeInterval, options: UIViewAnimationOptions, animations: (() -> Void)?, _ complition: ((Bool) -> Void)? = nil) {
+            var animated : Bool {
+                if duration > 0 {
+                    return true
+                } else {
+                    return false
+                }
+            }
+    
+        fromViewController.beginAppearanceTransition(false, animated: animated)
+        toViewController.beginAppearanceTransition(true, animated: animated)
+        
+        UIView.transition(with: view, duration: duration, options: options, animations: {
+            if let animations = animations {
+                animations()
+            }
+            self.view.addSubview(toViewController.view)
+            
+        }) { (finished) in
+            if finished {
+                complition!(finished)
+            }
+            fromViewController.view.removeFromSuperview()
+            //fromViewController.endAppearanceTransition
+            //toViewController.endAppearanceTransition
+        }
+        
+        
+    }
+    
+    
+    //If you are implementing a custom container controller, use this method to tell the child that its views are about to appear or disappear. Do not invoke viewWillAppear:, viewWillDisappear:, viewDidAppear:, or viewDidDisappear: directly.
+    func beginAppearanceTransition(_ isAppearing: Bool, animated: Bool) {
+        if appearanceTransitionStack == 0 || (appearanceTransitionStack > 0 && viewIsAppearing != isAppearing) {
+            appearanceTransitionStack = 1
+            appearanceTransitionIsAnimated = animated
+            viewIsAppearing = isAppearing
+            
+            if shouldAutomaticallyForwardAppearanceMethods {
+                for child in children {
+                    if child.isViewLoaded() && child.view.isDescendant(of: view) {
+                        child.beginAppearanceTransition(isAppearing, animated: animated)
+                    }
+                }
+            }
+            
+            if viewIsAppearing {
+                _ = self.view
+                viewWillAppear(appearanceTransitionIsAnimated)
+            } else {
+                viewWillDisappear(appearanceTransitionIsAnimated)
+            }
+        }
+    }
+    
+    /*
+ - (void)endAppearanceTransition
+ {
+ if (_appearanceTransitionStack > 0) {
+ _appearanceTransitionStack--;
+ 
+ if (_appearanceTransitionStack == 0) {
+ if ([self shouldAutomaticallyForwardAppearanceMethods]) {
+ for (UIViewController *child in self.childViewControllers) {
+ [child endAppearanceTransition];
+ }
+ }
+ 
+ if (_viewIsAppearing) {
+ [self viewDidAppear:_appearanceTransitionIsAnimated];
+ } else {
+ [self viewDidDisappear:_appearanceTransitionIsAnimated];
+ }
+ }
+ }
+ }
+ */
     
     func willMoveToParentViewController(_ parent: MyViewController?) {
         if parent != nil {
