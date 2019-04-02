@@ -178,7 +178,7 @@ class MyViewController: UIResponder {
     //open var presentedViewController: UIViewController? { get }
     //open var presentingViewController: UIViewController? { get }
     
-    private (set) var  navigationController: UINavigationController?
+    private (set) var navigationController: UINavigationController?
     private (set) var splitViewController: UISplitViewController?
     private (set) var tabBarController: UITabBarController?
     private (set) var searchDisplayController: UISearchController?
@@ -277,8 +277,19 @@ class MyViewController: UIResponder {
         }
     }
     
-    //This method adds the second view controller's view to the view hierarchy and then performs the animations defined in your animations block. After the animation completes, it removes the first view controller's view from the view hierarchy.
-    //This method is only intended to be called by an implementation of a custom container view controller. If you override this method, you must call super in your implementation.
+    /*
+     This method can be used to transition between sibling child view controllers. The receiver of this method is
+     their common parent view controller. (Use [UIViewController addChildViewController:] to create the
+     parent/child relationship.) This method will add the toViewController's view to the superview of the
+     fromViewController's view and the fromViewController's view will be removed from its superview after the
+     transition completes. It is important to allow this method to add and remove the views. The arguments to
+     this method are the same as those defined by UIView's block animation API. This method will fail with an
+     NSInvalidArgumentException if the parent view controllers are not the same as the receiver, or if the
+     receiver explicitly forwards its appearance and rotation callbacks to its children. Finally, the receiver
+     should not be a subclass of an iOS container view controller. Note also that it is possible to use the
+     UIView APIs directly. If they are used it is important to ensure that the toViewController's view is added
+     to the visible view hierarchy while the fromViewController's view is removed.
+     */
     
     func transitionFromViewController(_ fromViewController: MyViewController, toViewController: MyViewController, duration: TimeInterval, options: UIViewAnimationOptions, animations: (() -> Void)?, _ complition: ((Bool) -> Void)? = nil) {
             var animated : Bool {

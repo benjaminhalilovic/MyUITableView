@@ -1,23 +1,14 @@
 //
-//  MyNavigationViewController.swift
+//  testNCViewController.swift
 //  MyUITableView
 //
-//  Created by mac on 14/03/2019.
+//  Created by mac on 01/04/2019.
 //  Copyright © 2019 Benjamin Halilovic. All rights reserved.
 //
 
 import UIKit
 
-@objc protocol MyNavigationControllerDelegate {
-    func navigationController(_ navigationController: MyNavigationViewController, didShowViewController viewController: UIViewController, animated:Bool)
-    func navigationController(_ navigationController: MyNavigationViewController, willShowViewController viewController: UIViewController, animated:Bool)
-}
-
-class MyNavigationViewController: UIViewController {
-    
-    var viewControllers: [UIViewController]?
-    
-    
+class testNCViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

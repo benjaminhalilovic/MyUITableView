@@ -17,15 +17,21 @@ class ViewController: UIViewController, MyTableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         let myViewController = MyViewController(nibName: nil, bundle: nil)
-        myViewController.view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-       
-        print(myViewController)
         
-        let myViewController1 = UIViewController(nibName: nil, bundle: nil)
-        myViewController1.view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        print(myViewController1)
+        let myNavController = MyNavigationController(withRootViewController: myViewController)
+        
+        myNavController.view.addSubview(self.view)
+        
+        
+        //l
+        //myViewController.view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+       
+        //print(myViewController)
+        
+        //let myViewController1 = UIViewController(nibName: nil, bundle: nil)
+        //myViewController1.view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        //print(myViewController1)
         
         // Do any additional setup after loading the view, typically from a nib.
         //tableView.dataSource = self

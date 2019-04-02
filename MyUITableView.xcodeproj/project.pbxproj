@@ -15,7 +15,8 @@
 		041992A9203322D100527C13 /* MyTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041992A8203322D100527C13 /* MyTableView.swift */; };
 		041992AB2033A56600527C13 /* TableViewCntroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041992AA2033A56600527C13 /* TableViewCntroller.swift */; };
 		041E625D2044E5A8006C2E08 /* MyTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041E625C2044E5A8006C2E08 /* MyTableViewSection.swift */; };
-		04F123B4223A326E0064FDC5 /* MyNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F123B3223A326E0064FDC5 /* MyNavigationViewController.swift */; };
+		04CD64C22251FFA7008A2D61 /* MyNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CD64C12251FFA7008A2D61 /* MyNavigationController.swift */; };
+		04CD64C422524C22008A2D61 /* testNCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CD64C322524C22008A2D61 /* testNCViewController.swift */; };
 		04F123B8223A69B80064FDC5 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F123B7223A69B80064FDC5 /* MyViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,7 +31,8 @@
 		041992A8203322D100527C13 /* MyTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableView.swift; sourceTree = "<group>"; };
 		041992AA2033A56600527C13 /* TableViewCntroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCntroller.swift; sourceTree = "<group>"; };
 		041E625C2044E5A8006C2E08 /* MyTableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableViewSection.swift; sourceTree = "<group>"; };
-		04F123B3223A326E0064FDC5 /* MyNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNavigationViewController.swift; sourceTree = "<group>"; };
+		04CD64C12251FFA7008A2D61 /* MyNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNavigationController.swift; sourceTree = "<group>"; };
+		04CD64C322524C22008A2D61 /* testNCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testNCViewController.swift; sourceTree = "<group>"; };
 		04F123B7223A69B80064FDC5 /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,8 +66,8 @@
 		04199295203321F200527C13 /* MyUITableView */ = {
 			isa = PBXGroup;
 			children = (
+				04CD64C02251FF74008A2D61 /* NavigationController */,
 				04F123B6223A670F0064FDC5 /* ViewController */,
-				04F123B5223A32840064FDC5 /* NavigationVC */,
 				04199296203321F200527C13 /* AppDelegate.swift */,
 				04199298203321F200527C13 /* ViewController.swift */,
 				041992A8203322D100527C13 /* MyTableView.swift */,
@@ -79,12 +81,13 @@
 			path = MyUITableView;
 			sourceTree = "<group>";
 		};
-		04F123B5223A32840064FDC5 /* NavigationVC */ = {
+		04CD64C02251FF74008A2D61 /* NavigationController */ = {
 			isa = PBXGroup;
 			children = (
-				04F123B3223A326E0064FDC5 /* MyNavigationViewController.swift */,
+				04CD64C12251FFA7008A2D61 /* MyNavigationController.swift */,
+				04CD64C322524C22008A2D61 /* testNCViewController.swift */,
 			);
-			path = NavigationVC;
+			path = NavigationController;
 			sourceTree = "<group>";
 		};
 		04F123B6223A670F0064FDC5 /* ViewController */ = {
@@ -168,11 +171,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				041992A9203322D100527C13 /* MyTableView.swift in Sources */,
+				04CD64C22251FFA7008A2D61 /* MyNavigationController.swift in Sources */,
 				041E625D2044E5A8006C2E08 /* MyTableViewSection.swift in Sources */,
 				04199299203321F200527C13 /* ViewController.swift in Sources */,
 				04F123B8223A69B80064FDC5 /* MyViewController.swift in Sources */,
+				04CD64C422524C22008A2D61 /* testNCViewController.swift in Sources */,
 				04199297203321F200527C13 /* AppDelegate.swift in Sources */,
-				04F123B4223A326E0064FDC5 /* MyNavigationViewController.swift in Sources */,
 				041992AB2033A56600527C13 /* TableViewCntroller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
