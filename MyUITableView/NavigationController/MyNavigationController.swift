@@ -17,15 +17,25 @@ import UIKit
 class MyNavigationController: MyViewController {
     
     open var viewControllers: [MyViewController] = []
-    private (set) var visibleViewController: MyViewController?
+    open var visibleViewController: MyViewController? {
+        if let modalVC = modalViewController {
+            return modalVC
+        } else {
+            return topViewController
+        }
+    }
     private (set) var navigationBar: UINavigationBar
     private (set) var toolbar: UIToolbar
     open weak var delegate: MyNavigationControllerDelegate?
     
-    private (set) var topViewController:MyViewController?
+    var topViewController:MyViewController? {
+        return viewControllers.last
+    }
     
     var navigationBarHidden: Bool = false
     var toolBarHidden: Bool = false
+    var needsDeferredUpdate: Bool = false
+    var isUpdating: Bool = false
     
     func isNavigationBarHidden() -> Bool {
         return navigationBarHidden
@@ -64,6 +74,9 @@ class MyNavigationController: MyViewController {
         visibleViewController?.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         toolbar.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         
+        navigationBar.backgroundColor = UIColor.gray
+        toolbar.backgroundColor = UIColor.red
+        
         view.addSubview((visibleViewController?.view)!)
         view.addSubview(navigationBar)
         view.addSubview(toolbar)
@@ -92,6 +105,45 @@ class MyNavigationController: MyViewController {
         contentRect = content
         toolBarRect = toolbar
         
+    }
+    
+    func setNeedsDeferredUpdate() {
+        needsDeferredUpdate = true
+        view.setNeedsLayout()
+    }
+    
+    func updateVisibleViewController(_animated: Bool) {
+        isUpdating = true
+        let newVisibleViewController = self.topViewController
+        let oldVisibleViewController = visibleViewController
+        
+        
+    }
+    
+    func pushViewController(_ viewController: MyViewController, animated: Bool) {
+        
+        if viewController.parent != self {
+            viewControllers.append(viewController)
+            //Need to implement that viewControllers same sa childerns in UIViewCOntroller
+        }
+        
+        if animated {
+            updateVisibleViewController(_animated: animated)
+        } else {
+            setNeedsDeferredUpdate()
+        }
+    }
+    
+    func popViewController(_ animated: Bool) -> MyViewController? {
+        if viewControllers.count <= 1 {
+            return nil
+        }
+        let formerTopViewController = self.topViewController
+        if formerTopViewController == visibleViewController {
+            formerTopViewController?.willMoveToParentViewController(nil)
+        }
+        formerTopViewController?.removeFromParentViewController()
+        return formerTopViewController
     }
     
     

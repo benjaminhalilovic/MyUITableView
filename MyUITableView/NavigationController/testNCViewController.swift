@@ -10,9 +10,14 @@ import UIKit
 
 class testNCViewController: UINavigationController {
 
+    override func addChildViewController(_ childController: UIViewController) {
+        print("addChild")
+        super.addChildViewController(childController)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
     

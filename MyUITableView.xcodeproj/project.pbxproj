@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		04199297203321F200527C13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04199296203321F200527C13 /* AppDelegate.swift */; };
-		04199299203321F200527C13 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04199298203321F200527C13 /* ViewController.swift */; };
 		0419929C203321F200527C13 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0419929A203321F200527C13 /* Main.storyboard */; };
 		0419929E203321F200527C13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0419929D203321F200527C13 /* Assets.xcassets */; };
 		041992A1203321F200527C13 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0419929F203321F200527C13 /* LaunchScreen.storyboard */; };
@@ -17,13 +16,13 @@
 		041E625D2044E5A8006C2E08 /* MyTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041E625C2044E5A8006C2E08 /* MyTableViewSection.swift */; };
 		04CD64C22251FFA7008A2D61 /* MyNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CD64C12251FFA7008A2D61 /* MyNavigationController.swift */; };
 		04CD64C422524C22008A2D61 /* testNCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CD64C322524C22008A2D61 /* testNCViewController.swift */; };
+		04CD64CB2254D724008A2D61 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CD64CA2254D724008A2D61 /* ViewController.swift */; };
 		04F123B8223A69B80064FDC5 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F123B7223A69B80064FDC5 /* MyViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		04199293203321F200527C13 /* MyUITableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyUITableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04199296203321F200527C13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		04199298203321F200527C13 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0419929B203321F200527C13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0419929D203321F200527C13 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		041992A0203321F200527C13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -33,6 +32,7 @@
 		041E625C2044E5A8006C2E08 /* MyTableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableViewSection.swift; sourceTree = "<group>"; };
 		04CD64C12251FFA7008A2D61 /* MyNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNavigationController.swift; sourceTree = "<group>"; };
 		04CD64C322524C22008A2D61 /* testNCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testNCViewController.swift; sourceTree = "<group>"; };
+		04CD64CA2254D724008A2D61 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		04F123B7223A69B80064FDC5 /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,8 +69,8 @@
 				04CD64C02251FF74008A2D61 /* NavigationController */,
 				04F123B6223A670F0064FDC5 /* ViewController */,
 				04199296203321F200527C13 /* AppDelegate.swift */,
-				04199298203321F200527C13 /* ViewController.swift */,
 				041992A8203322D100527C13 /* MyTableView.swift */,
+				04CD64CA2254D724008A2D61 /* ViewController.swift */,
 				041E625C2044E5A8006C2E08 /* MyTableViewSection.swift */,
 				0419929A203321F200527C13 /* Main.storyboard */,
 				0419929D203321F200527C13 /* Assets.xcassets */,
@@ -173,10 +173,10 @@
 				041992A9203322D100527C13 /* MyTableView.swift in Sources */,
 				04CD64C22251FFA7008A2D61 /* MyNavigationController.swift in Sources */,
 				041E625D2044E5A8006C2E08 /* MyTableViewSection.swift in Sources */,
-				04199299203321F200527C13 /* ViewController.swift in Sources */,
 				04F123B8223A69B80064FDC5 /* MyViewController.swift in Sources */,
 				04CD64C422524C22008A2D61 /* testNCViewController.swift in Sources */,
 				04199297203321F200527C13 /* AppDelegate.swift in Sources */,
+				04CD64CB2254D724008A2D61 /* ViewController.swift in Sources */,
 				041992AB2033A56600527C13 /* TableViewCntroller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
